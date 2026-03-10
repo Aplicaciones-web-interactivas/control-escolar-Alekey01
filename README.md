@@ -1,59 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Control Escolar
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web de control escolar desarrollado con **Laravel** y **Tailwind CSS**. Permite gestionar usuarios (alumnos, maestros y administradores), materias y horarios a traves de una interfaz sencilla y moderna.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologias utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **PHP 8+** con **Laravel 11**
+- **MySQL** como base de datos
+- **Tailwind CSS** (via Vite) para los estilos
+- **DBngin** para gestionar el servidor MySQL en local
+- **TablePlus** para visualizar la base de datos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Requisitos previos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP >= 8.1
+- Composer
+- Node.js y npm
+- MySQL corriendo (por ejemplo, con DBngin)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Instalacion
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+\\ash
+# 1. Instalar dependencias de PHP
+composer install
 
-### Premium Partners
+# 2. Instalar dependencias de Node
+npm install
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# 3. Copiar el archivo de entorno
+cp .env.example .env
 
-## Contributing
+# 4. Generar la clave de la aplicacion
+php artisan key:generate
+\
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Configuracion de la base de datos
 
-## Code of Conduct
+Edita el archivo \.env\ con los datos de tu servidor MySQL:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+\\env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=control_escolar
+DB_USERNAME=root
+DB_PASSWORD=
+\
+Luego crea las tablas ejecutando las migraciones:
 
-## Security Vulnerabilities
+\\ash
+php artisan migrate
+\
+Si necesitas reiniciar la base de datos desde cero:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+\\ash
+php artisan migrate:fresh
+\
+---
 
-## License
+## Levantar el proyecto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Abre dos terminales y ejecuta:
+
+\\ash
+# Terminal 1 - servidor PHP
+php artisan serve
+
+# Terminal 2 - compilador de assets (Tailwind)
+npm run dev
+\
+El proyecto estara disponible en: http://localhost:8000
+
+---
+
+## Estructura de la base de datos
+
+### Tabla users
+| Campo               | Tipo    | Descripcion                      |
+|---------------------|---------|----------------------------------|
+| id                  | bigint  | Clave primaria                   |
+| nombre              | string  | Nombre completo del usuario      |
+| clave_institucional | string  | Clave unica del usuario          |
+| email               | string  | Correo electronico               |
+| password            | string  | Contrasena cifrada               |
+| rol                 | enum    | admin, maestro o alumno          |
+| activo              | boolean | Indica si el usuario esta activo |
+
+### Tabla materias
+| Campo  | Tipo   | Descripcion               |
+|--------|--------|---------------------------|
+| id     | bigint | Clave primaria            |
+| nombre | string | Nombre de la materia      |
+| clave  | string | Clave unica de la materia |
+
+### Tabla horarios
+| Campo       | Tipo   | Descripcion                |
+|-------------|--------|----------------------------|
+| id          | bigint | Clave primaria             |
+| materia_id  | FK     | Referencia a materias      |
+| usuario_id  | FK     | Referencia a users         |
+| hora_inicio | time   | Hora de inicio de la clase |
+| hora_fin    | time   | Hora de fin de la clase    |
+
+---
+
+## Rutas principales
+
+| Metodo | URL                         | Descripcion                     |
+|--------|-----------------------------|---------------------------------|
+| GET    | /login                      | Vista de inicio de sesion       |
+| POST   | /login                      | Procesar login                  |
+| GET    | /register                   | Vista de registro               |
+| POST   | /register                   | Crear nuevo usuario             |
+| POST   | /logout                     | Cerrar sesion                   |
+| GET    | /dashboard                  | Panel principal (requiere auth) |
+| GET    | /admin/materia              | Listar materias y agregar nueva |
+| POST   | /admin/materia              | Guardar nueva materia           |
+| GET    | /admin/materiaeditar/{id}   | Formulario de edicion           |
+| PUT    | /admin/materia/{id}         | Actualizar materia              |
+| DELETE | /admin/materia/{id}         | Eliminar materia                |
+
+---
+
+## Funcionalidades actuales
+
+- **Registro de usuarios** con nombre, clave institucional, correo, rol y contrasena
+- **Inicio de sesion** con autenticacion de Laravel
+- **Cierre de sesion**
+- **Dashboard** con informacion del usuario autenticado y accesos rapidos
+- **CRUD completo de materias**: crear, listar, editar y eliminar
+
+---
+
+## Estructura de carpetas relevante
+
+\app/
++-- Http/Controllers/
+|   +-- AuthController.php      # Login, registro, logout
+|   +-- AdminController.php     # CRUD de materias
++-- Models/
+    +-- User.php
+    +-- Materia.php
+    +-- Horario.php
+database/
++-- migrations/                 # Definicion de tablas
+resources/views/
++-- auth/
+|   +-- login.blade.php
+|   +-- register.blade.php
++-- dashboard.blade.php
++-- layouts/admin/
+    +-- materia.blade.php
+    +-- materiaeditar.blade.php
+routes/
++-- web.php
+\
+---
+
+## Autor
+
+Proyecto desarrollado como practica de desarrollo web con Laravel.
