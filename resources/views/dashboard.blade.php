@@ -62,6 +62,10 @@
                         class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
                         Gestionar Calificaciones
                     </a>
+                    <a href="{{ route('inscripciones.index') }}"
+                        class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
+                        Gestionar Inscripciones
+                    </a>
                 </div>
             </div>
         </div>

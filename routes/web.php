@@ -32,3 +32,11 @@ Route::post('/calificaciones',          [App\Http\Controllers\CalificacionContro
 Route::get('/calificaciones/{id}/editar', [App\Http\Controllers\CalificacionController::class, 'edit'])->name('calificaciones.edit');
 Route::put('/calificaciones/{id}',      [App\Http\Controllers\CalificacionController::class, 'update'])->name('calificaciones.update');
 Route::delete('/calificaciones/{id}',   [App\Http\Controllers\CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
+
+// Inscripciones
+Route::get('/inscripciones',              [App\Http\Controllers\InscripcionController::class, 'index'])->name('inscripciones.index');
+Route::get('/inscripciones/crear',        [App\Http\Controllers\InscripcionController::class, 'create'])->name('inscripciones.create');
+Route::post('/inscripciones',             [App\Http\Controllers\InscripcionController::class, 'store'])->name('inscripciones.store');
+Route::get('/inscripciones/{id}/editar',  [App\Http\Controllers\InscripcionController::class, 'edit'])->name('inscripciones.edit');
+Route::put('/inscripciones/{id}',         [App\Http\Controllers\InscripcionController::class, 'update'])->name('inscripciones.update');
+Route::delete('/inscripciones/{id}',      [App\Http\Controllers\InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
