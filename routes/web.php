@@ -24,3 +24,11 @@ Route::post('/admin/materia', [App\Http\Controllers\AdminController::class, 'sav
 Route::delete('/admin/materia/{id}', [App\Http\Controllers\AdminController::class, 'deleteMateria'])->name('admin.deleteMateria');
 Route::get('/admin/materiaeditar/{id}',  [App\Http\Controllers\AdminController::class, 'editMateria'])->name('admin.editMateria');
 Route::put('/admin/materia/{id}',         [App\Http\Controllers\AdminController::class, 'updateMateria'])->name('admin.updateMateria');
+
+// Calificaciones
+Route::get('/calificaciones',           [App\Http\Controllers\CalificacionController::class, 'index'])->name('calificaciones.index');
+Route::get('/calificaciones/crear',     [App\Http\Controllers\CalificacionController::class, 'create'])->name('calificaciones.create');
+Route::post('/calificaciones',          [App\Http\Controllers\CalificacionController::class, 'store'])->name('calificaciones.store');
+Route::get('/calificaciones/{id}/editar', [App\Http\Controllers\CalificacionController::class, 'edit'])->name('calificaciones.edit');
+Route::put('/calificaciones/{id}',      [App\Http\Controllers\CalificacionController::class, 'update'])->name('calificaciones.update');
+Route::delete('/calificaciones/{id}',   [App\Http\Controllers\CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
