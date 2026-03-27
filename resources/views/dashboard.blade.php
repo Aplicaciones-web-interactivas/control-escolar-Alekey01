@@ -70,6 +70,10 @@
                         class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
                         Gestionar Tareas
                     </a>
+                    <a href="{{ route('alumno.mis-tareas') }}"
+                        class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
+                        Mis Tareas
+                    </a>
                 </div>
             </div>
         </div>

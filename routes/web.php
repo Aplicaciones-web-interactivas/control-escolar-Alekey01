@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Auth
@@ -40,6 +40,12 @@ Route::post('/inscripciones',             [App\Http\Controllers\InscripcionContr
 Route::get('/inscripciones/{id}/editar',  [App\Http\Controllers\InscripcionController::class, 'edit'])->name('inscripciones.edit');
 Route::put('/inscripciones/{id}',         [App\Http\Controllers\InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}',      [App\Http\Controllers\InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
+
+// Módulo alumno — ver y entregar tareas (requiere autenticación)
+Route::middleware('auth')->group(function () {
+    Route::get('/mis-tareas',                    [App\Http\Controllers\TareaAlumnoController::class, 'index'])->name('alumno.mis-tareas');
+    Route::post('/mis-tareas/{id}/subir-pdf',    [App\Http\Controllers\TareaAlumnoController::class, 'subirPdf'])->name('alumno.tareas.subir');
+});
 
 // Tareas
 Route::get('/tareas',              [App\Http\Controllers\TareaController::class, 'index'])->name('tareas.index');

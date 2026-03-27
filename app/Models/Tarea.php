@@ -14,6 +14,7 @@ class Tarea extends Model
         'materia_id',
         'fecha_entrega',
         'estado',
+        'archivo_pdf',
     ];
 
     public function maestro()
