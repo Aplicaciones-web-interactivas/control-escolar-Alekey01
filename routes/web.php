@@ -40,3 +40,11 @@ Route::post('/inscripciones',             [App\Http\Controllers\InscripcionContr
 Route::get('/inscripciones/{id}/editar',  [App\Http\Controllers\InscripcionController::class, 'edit'])->name('inscripciones.edit');
 Route::put('/inscripciones/{id}',         [App\Http\Controllers\InscripcionController::class, 'update'])->name('inscripciones.update');
 Route::delete('/inscripciones/{id}',      [App\Http\Controllers\InscripcionController::class, 'destroy'])->name('inscripciones.destroy');
+
+// Tareas
+Route::get('/tareas',              [App\Http\Controllers\TareaController::class, 'index'])->name('tareas.index');
+Route::get('/tareas/crear',        [App\Http\Controllers\TareaController::class, 'create'])->name('tareas.create');
+Route::post('/tareas',             [App\Http\Controllers\TareaController::class, 'store'])->name('tareas.store');
+Route::get('/tareas/{id}/editar',  [App\Http\Controllers\TareaController::class, 'edit'])->name('tareas.edit');
+Route::put('/tareas/{id}',         [App\Http\Controllers\TareaController::class, 'update'])->name('tareas.update');
+Route::delete('/tareas/{id}',      [App\Http\Controllers\TareaController::class, 'destroy'])->name('tareas.destroy');
