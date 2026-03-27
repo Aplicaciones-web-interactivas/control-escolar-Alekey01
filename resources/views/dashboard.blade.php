@@ -58,6 +58,10 @@
                         class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
                         Gestionar Materias
                     </a>
+                    <a href="{{ route('admin.alumnos') }}"
+                        class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
+                        Gestionar Alumnos
+                    </a>
                     <a href="{{ route('calificaciones.index') }}"
                         class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition">
                         Gestionar Calificaciones

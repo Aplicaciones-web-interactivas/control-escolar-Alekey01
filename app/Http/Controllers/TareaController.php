@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Tarea;
 use App\Models\User;
 use App\Models\Materia;
+use App\Models\Inscripcion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TareaController extends Controller
 {
@@ -18,10 +20,10 @@ class TareaController extends Controller
 
     public function create()
     {
-        $usuarios  = User::where('activo', true)->orderBy('nombre')->get();
-        $materias  = Materia::orderBy('nombre')->get();
+        $maestros = User::where('activo', true)->orderBy('nombre')->get();
+        $materias = Materia::orderBy('nombre')->get();
 
-        return view('layouts.admin.tareacreate', compact('usuarios', 'materias'));
+        return view('layouts.admin.tareacreate', compact('maestros', 'materias'));
     }
 
     public function store(Request $request)
@@ -30,17 +32,30 @@ class TareaController extends Controller
             'titulo'        => 'required|string|max:255',
             'descripcion'   => 'nullable|string',
             'maestro_id'    => 'required|exists:users,id',
-            'alumno_id'     => 'required|exists:users,id',
             'materia_id'    => 'required|exists:materias,id',
             'fecha_entrega' => 'nullable|date',
             'estado'        => 'required|in:pendiente,entregada,calificada',
         ]);
 
-        Tarea::create($request->only(
-            'titulo', 'descripcion', 'maestro_id', 'alumno_id', 'materia_id', 'fecha_entrega', 'estado'
-        ));
+        $alumnos = Inscripcion::where('materia_id', $request->materia_id)
+            ->pluck('alumno_id');
 
-        return redirect()->route('tareas.index')->with('success', 'Tarea asignada correctamente.');
+        if ($alumnos->isEmpty()) {
+            return back()->withInput()->with('error', 'No hay alumnos inscritos en esa materia.');
+        }
+
+        $base = $request->only('titulo', 'descripcion', 'maestro_id', 'materia_id', 'fecha_entrega', 'estado');
+        $now  = Carbon::now();
+
+        $registros = $alumnos->map(fn ($id) => array_merge($base, [
+            'alumno_id'  => $id,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]))->all();
+
+        Tarea::insert($registros);
+
+        return redirect()->route('tareas.index')->with('success', 'Tarea asignada a ' . count($registros) . ' alumno(s) inscritos.');
     }
 
     public function edit(int $id)

@@ -47,6 +47,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/mis-tareas/{id}/subir-pdf',    [App\Http\Controllers\TareaAlumnoController::class, 'subirPdf'])->name('alumno.tareas.subir');
 });
 
+// Alumnos
+Route::get('/admin/alumnos',        [App\Http\Controllers\AlumnoController::class, 'index'])->name('admin.alumnos');
+Route::post('/admin/alumnos',       [App\Http\Controllers\AlumnoController::class, 'store'])->name('admin.alumnos.store');
+Route::delete('/admin/alumnos/{id}',[App\Http\Controllers\AlumnoController::class, 'destroy'])->name('admin.alumnos.destroy');
+
+// Quick-add AJAX (para modales en formularios)
+Route::post('/ajax/usuario', [App\Http\Controllers\QuickAddController::class, 'storeUsuario'])->name('ajax.usuario.store');
+Route::post('/ajax/materia', [App\Http\Controllers\QuickAddController::class, 'storeMateria'])->name('ajax.materia.store');
+
 // Tareas
 Route::get('/tareas',              [App\Http\Controllers\TareaController::class, 'index'])->name('tareas.index');
 Route::get('/tareas/crear',        [App\Http\Controllers\TareaController::class, 'create'])->name('tareas.create');

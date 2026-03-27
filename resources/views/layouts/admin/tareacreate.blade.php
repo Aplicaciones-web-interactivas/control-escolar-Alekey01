@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,11 +13,11 @@
         <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
             <h1 class="text-xl font-bold text-gray-800">Control Escolar</h1>
             <div class="flex items-center gap-4">
-                <a href="{{ route('tareas.index') }}" class="text-sm text-gray-600 hover:text-blue-600 transition">← Volver a tareas</a>
+                <a href="{{ route('tareas.index') }}" class="text-sm text-gray-600 hover:text-blue-600 transition">&larr; Volver a tareas</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="text-sm text-red-500 hover:text-red-700 transition cursor-pointer">
-                        Cerrar sesión
+                        Cerrar sesion
                     </button>
                 </form>
             </div>
@@ -38,22 +38,27 @@
                     </ul>
                 </div>
             @endif
+            @if (session('error'))
+                <div class="bg-red-50 border border-red-300 text-red-700 rounded-lg px-4 py-3 text-sm mb-5">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             <form action="{{ route('tareas.store') }}" method="POST" class="space-y-5">
                 @csrf
 
                 <div>
-                    <label for="titulo" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                    <label for="titulo" class="block text-sm font-medium text-gray-700 mb-1">Titulo</label>
                     <input
                         type="text" id="titulo" name="titulo"
                         value="{{ old('titulo') }}" required maxlength="255"
-                        placeholder="Ej. Ejercicio de álgebra — Unidad 3"
+                        placeholder="Ej. Ejercicio de algebra - Unidad 3"
                         class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     >
                 </div>
 
                 <div>
-                    <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción <span class="text-gray-400 font-normal">(opcional)</span></label>
+                    <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripcion <span class="text-gray-400 font-normal">(opcional)</span></label>
                     <textarea
                         id="descripcion" name="descripcion" rows="3"
                         placeholder="Instrucciones o detalles de la tarea..."
@@ -65,22 +70,9 @@
                     <label for="maestro_id" class="block text-sm font-medium text-gray-700 mb-1">Maestro (asigna)</label>
                     <select id="maestro_id" name="maestro_id" required
                         class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white">
-                        <option value="">— Selecciona un maestro —</option>
-                        @foreach ($usuarios as $usuario)
+                        <option value="">-- Selecciona un maestro --</option>
+                        @foreach ($maestros as $usuario)
                             <option value="{{ $usuario->id }}" {{ old('maestro_id') == $usuario->id ? 'selected' : '' }}>
-                                {{ $usuario->nombre }} ({{ $usuario->clave_institucional }})
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div>
-                    <label for="alumno_id" class="block text-sm font-medium text-gray-700 mb-1">Alumno (recibe)</label>
-                    <select id="alumno_id" name="alumno_id" required
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white">
-                        <option value="">— Selecciona un alumno —</option>
-                        @foreach ($usuarios as $usuario)
-                            <option value="{{ $usuario->id }}" {{ old('alumno_id') == $usuario->id ? 'selected' : '' }}>
                                 {{ $usuario->nombre }} ({{ $usuario->clave_institucional }})
                             </option>
                         @endforeach
@@ -91,7 +83,7 @@
                     <label for="materia_id" class="block text-sm font-medium text-gray-700 mb-1">Materia</label>
                     <select id="materia_id" name="materia_id" required
                         class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-white">
-                        <option value="">— Selecciona una materia —</option>
+                        <option value="">-- Selecciona una materia --</option>
                         @foreach ($materias as $materia)
                             <option value="{{ $materia->id }}" {{ old('materia_id') == $materia->id ? 'selected' : '' }}>
                                 {{ $materia->nombre }} ({{ $materia->clave }})
